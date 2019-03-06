@@ -3,6 +3,7 @@ package librerias.estructurasDeDatos.deDispersion;
 import librerias.estructurasDeDatos.modelos.Map;
 import librerias.estructurasDeDatos.modelos.ListaConPI; 
 import librerias.estructurasDeDatos.lineales.LEGListaConPI;
+import java.lang.Math;
 
 /**
  * Implementacion de una TablaHash Enlazada con Listas con PI 
@@ -148,25 +149,46 @@ public class TablaHash<C, V> implements Map<C, V> {
 
     /** Devuelve una ListaConPI con las talla() claves de una Tabla Hash */
     public ListaConPI<C> claves() {
-        //COMPLETAR
-		return null;
-		
+        ListaConPI<C> res = new LEGListaConPI<C>();
+        for (int i = 0; i < elArray.length; i++) {
+            elArray[i].inicio();
+            while (!elArray[i].esFin()) {
+                res.insertar(elArray[i].recuperar().clave);
+                elArray[i].siguiente();
+            }
+        }
+		return res;
     }
    
 	// rehashing: crea una nueva tabla con un array de talla aprox.
     // el doble y reubica las entradas
     @SuppressWarnings("unchecked")
     protected final void rehashing() {
-        //COMPLETAR
-		
-		
+        ListaConPI<EntradaHash<C, V>>[] res = new LEGListaConPI[siguientePrimo(elArray.length * 2)];
+        ListaConPI<EntradaHash<C, V>>[] aux = elArray;
+
+        for (int i = 0; i < res.length; i++) {
+            res[i] = new LEGListaConPI<EntradaHash<C, V>>();
+        }
+        elArray = res;
+
+        for (int i = 0; i < aux.length; i++) {
+            aux[i].inicio();
+            while (!aux[i].esFin()) {
+                elArray[indiceHash(aux[i].recuperar().clave)].insertar(aux[i].recuperar());
+                aux[i].siguiente();
+            }
+        }
     } 
 	
     /** Calcula la desviacion tipica de las longitudes de las listas */
     public final double desviacionTipica() {
-        //COMPLETAR
-		return 0.0;
-		
+        double factorCarga = factorCarga();
+        double res = 0.0;
+        for (int i = 0; i < elArray.length; i++) {
+            res += (factorCarga - elArray[i].talla()) * (factorCarga - elArray[i].talla());
+        }
+		return Math.sqrt(res / elArray.length);
     }
 
     /** Devuelve un String que representa el histograma de ocupacion:
@@ -178,8 +200,17 @@ public class TablaHash<C, V> implements Map<C, V> {
       * la ultima linea (9) contiene el numero de cubetas de longitud 9 o mas
       */      
     public String histograma() {
-        //COMPLETAR
-        return "";
+        String res = "";
+        int[] aux = new int[10];
+        for (int i = 0; i < elArray.length; i++) {
+            if (elArray[i].talla() > 9) aux[9]++;
+            else aux[elArray[i].talla()]++;
+        }
+
+        for (int i = 0; i < aux.length; i++) {
+            res += i + "	" + aux[i] + "\n";
+        }
+        return res;
 		
     }
 }
