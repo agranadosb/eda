@@ -29,12 +29,12 @@ public class Indexador {
      *  Se debe cambiar si la ubicacion es diferente.
      */
     protected static String DIR_LIBROS = File.separator 
-	                                   + "labos" + File.separator 
+                                       + "labos" + File.separator 
                                        + "asignaturas" + File.separator 
-									   + "ETSINF" + File.separator 
+                                       + "ETSINF" + File.separator 
                                        + "eda" + File.separator 
-									   + "libros" + File.separator 
-									   + "TXT" + File.separator;
+                                       + "libros" + File.separator 
+                                       + "TXT" + File.separator;
     
     /** DIR_LISTAS_LIBROS contiene la ubicacion de las listas de libros a analizar.
      *  Por defecto se encuentran en el paquete aplicaciones.indices de eda.
@@ -68,27 +68,27 @@ public class Indexador {
      *  @param   int tallaAprox, numero aproximado de terminos a considerar
      *  @throws  FileNotFoundException si no se encuentra algun fichero 
      */ 
-    public Indexador(String listaLibros, int tallaAprox) throws FileNotFoundException {	
-    	boolean res = true; 
-    	Scanner fich = new Scanner(new File(DIR_LISTAS_LIBROS + listaLibros));
-    	System.out.println("Cargando libros...");
+    public Indexador(String listaLibros, int tallaAprox) throws FileNotFoundException { 
+        boolean res = true; 
+        Scanner fich = new Scanner(new File(DIR_LISTAS_LIBROS + listaLibros));
+        System.out.println("Cargando libros...");
 
-		
-    	// COMPLETAR:
-		// Inicializar el atributo Map utilizando como tipo dinamico
-		// la clase TablaHash, cuyo constructor requiere como argumento
+        
+        // COMPLETAR:
+        // Inicializar el atributo Map utilizando como tipo dinamico
+        // la clase TablaHash, cuyo constructor requiere como argumento
         // el numero aproximado de datos (tallaAprox)
         indices = new TablaHash<String, ListaConPI<Indice>>(tallaAprox);
-		
-    	while (fich.hasNext()) {
-    	    String nombreLibro = fich.next();
-    	    String fichLibro = DIR_LIBROS + nombreLibro;
-    	    res = cargarLibro(fichLibro, SEPARADORES);
-    	}
-    	tmpCarga = tmpCarga / 1000000.0;
-    	System.out.println("Terminos indexados (tamaño del Map) = " + indices.talla());
+        
+        while (fich.hasNext()) {
+            String nombreLibro = fich.next();
+            String fichLibro = DIR_LIBROS + nombreLibro;
+            res = cargarLibro(fichLibro, SEPARADORES);
+        }
+        tmpCarga = tmpCarga / 1000000.0;
+        System.out.println("Terminos indexados (tamaño del Map) = " + indices.talla());
         System.out.printf("Tiempo de carga = %10.2f mseg.\n", tmpCarga);
-    	if (!res) { throw new FileNotFoundException(); }
+        if (!res) { throw new FileNotFoundException(); }
     }
     
     /** Actualiza el Indexador con los datos del documento nombreLibro que
@@ -98,7 +98,7 @@ public class Indexador {
      *  @return  boolean, true si el libro se ha leido con exito y falso en caso contrario
      */ 
     public boolean cargarLibro(String fichLibro, String separadores)  {
-	    boolean res = true;   	
+        boolean res = true;     
         try {            
             Scanner libro = new Scanner(new File(fichLibro));            
             int posSep = fichLibro.lastIndexOf(File.separator);
@@ -118,7 +118,7 @@ public class Indexador {
                     if (esTermino(clave)) {
                         t1 = System.nanoTime();
                         // COMPLETAR:
-						// añadir el nuevo par titulo, numLin (ind) al Map
+                        // añadir el nuevo par titulo, numLin (ind) al Map
                         // la clave puede haber aparecido antes o no.
                         aux = indices.recuperar(clave);
                         if (aux == null) {
@@ -135,10 +135,10 @@ public class Indexador {
             }
             tmpCarga += tmp;
         } catch (FileNotFoundException e) {
-	    System.err.println("Error " + fichLibro + " no se encuentra");
-	    res = false;	    
+        System.err.println("Error " + fichLibro + " no se encuentra");
+        res = false;        
         }
-	return res;
+    return res;
     }
        
     /**
@@ -150,19 +150,19 @@ public class Indexador {
     public ListaConPI<String> indiceDe(String pal) {
         ListaConPI<String> res = new LEGListaConPI<String>();  
         ListaConPI<Indice> aux = this.indices.recuperar(pal);
-        aux.inicio();
-
-        for (int i = 0; i < aux.talla(); i++) {
-            res.insertar(aux.recuperar().toString());
-            res.siguiente();
-            aux.siguiente();
+        if (aux != null) {
+            aux.inicio();
+    
+            while (!aux.esFin()) {
+                res.insertar(aux.recuperar().toString());
+                aux.siguiente();
+            }
         }
-
-        return res;   
+        return res;
     }
     /** Comprueba si el String s es un termino valido
-	  * es decir, si es una secuencia de letras
-	  */
+      * es decir, si es una secuencia de letras
+      */
     protected static boolean esTermino(String s) {
         for (int i = 0; i < s.length(); i++) {
             if (!Character.isLetter(s.charAt(i))) {
