@@ -39,28 +39,40 @@ public class Termino {
         valorHash = obtieneValorHash(fHash);
     }
     // Hashing Simple: solo suma los codigos de termino(
-    private int hashSimple() { 
+    private int hashSimple() {
+        if (termino == null || termino.length() == 0) return 0;
+
         int res = 0;
-        //COMPLETAR
+        for (int i = 0; i < termino.length() - 1; i++) {
+            res += (int) termino.charAt(i);
+        }
 		
-        return res;
+        return res + (int) termino.charAt(termino.length() - 1);
     }
-    
+    //((((x0*37 + x1)*37 + x2)*37 + x3)*37 + x4)*37 + x5
     // Hashing Weiss: propuesta en capítulo 19 apartado 2
     // Usa como base la constante 37
-    private int hashWeiss() { 
+    private int hashWeiss() {
+        if (termino == null || termino.length() == 0) return 0;
+
         int res = 0;
-        //COMPLETAR
+        for (int i = 0; i < termino.length() - 1; i++) {
+            res = (res + (int) termino.charAt(i)) * 37;
+        }
 		
-        return res;
+        return res + (int) termino.charAt(termino.length() - 1);
     }
     
     // Hashing McKenzie: substituir 37 por 4 en el método Weiss
     private int hashMcKenzie() { 
+        if (termino == null || termino.length() == 0) return 0;
+
         int res = 0;
-        //COMPLETAR
+        for (int i = 0; i < termino.length() - 1; i++) {
+            res = (res + (int) termino.charAt(i)) * 4;
+        }
 		
-        return res;
+        return res + (int) termino.charAt(termino.length() - 1);
     }
     
     // Hashing String: usa el hashCode de la clase estandar String
@@ -89,7 +101,7 @@ public class Termino {
      *  @return boolean, true si son iguales, false en caso contrario
      */
     public boolean equals(Object o) {
-        //COMPLETAR
+        return o instanceof Termino && ((Termino) o).termino.equals(termino) && ((Termino) o).valorHash == valorHash && ((Termino) o).fHash == fHash;
 		
     }
     
@@ -97,8 +109,15 @@ public class Termino {
      *  @param Object, objeto de tipo Termino a comparar con this
      *  @return int, entero asociado al termino
      */
-    public int hashCode() { 
-	    //COMPLETAR
+    public int hashCode() {
+        int res;
+	    switch (fHash) {
+            case SIMPLE: res = super.hashCode(); break;
+            case WEISS: res = hashWeiss(); break;
+            case MCKENZIE: res = hashMcKenzie(); break;
+            default: res = hashString(); break;
+        }
+        return res;
 	}
     
     /** Devuelve un String que contiene informacion sobre el termino
