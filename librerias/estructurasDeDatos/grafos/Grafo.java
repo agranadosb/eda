@@ -168,7 +168,6 @@ public abstract class Grafo {
     // Recorrido BFS del vertice origen, que almacena en res
     // su resultado
     protected void arbolRecubrimientoBFS(int origen, Arista[] res) {
-      res[ordenVisita] = new Arista(origen, ordenVisita, 1.0);
       visitados[origen] = 1;
       q.encolar(origen);
       while (!q.esVacia()) {
@@ -177,7 +176,7 @@ public abstract class Grafo {
           for (l.inicio(); !l.esFin(); l.siguiente()) {
               Adyacente a = l.recuperar(); 
               if (visitados[a.destino] == 0) {
-                  res[ordenVisita++] = new Arista(origen, a.destino, 1.0);
+                  res[ordenVisita++] = new Arista(u, a.destino, a.getPeso());
                   visitados[a.destino] = 1;
                   q.encolar(a.destino);
               }

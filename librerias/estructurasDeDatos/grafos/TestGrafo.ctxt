@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=TestGrafo
+comment0.text=\n\ Prueba\ basica\ del\ algoritmo\ arbolRecubrimientoBFS\n\ de\ GrafoNoDirigido\ y\ de\ la\ clase\ Arista\n\ \n\ @version\ Diciembre\ 2018\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=test\ res
+comment2.target=boolean\ validar(java.lang.String,\ java.lang.String)
+comment3.params=
+comment3.target=java.lang.String\ testArista()
+comment4.params=
+comment4.target=java.lang.String\ testSTNoConexo()
+comment5.params=
+comment5.target=java.lang.String\ testSTConexo()
+numComments=6
