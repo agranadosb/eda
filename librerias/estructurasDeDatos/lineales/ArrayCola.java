@@ -1,9 +1,5 @@
 package librerias.estructurasDeDatos.lineales;
 
- 
-
- 
-
 import librerias.estructurasDeDatos.modelos.Cola;
 
 /** Implementa el interfaz Cola mediante un array
