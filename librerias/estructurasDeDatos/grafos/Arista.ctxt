@@ -16,4 +16,6 @@ comment4.text=\ Devuelve\ el\ peso\ de\ una\ arista.\n\n\ @return\ double\ Peso\
 comment5.params=
 comment5.target=java.lang.String\ toString()
 comment5.text=\ Devuelve\ un\ String\ que\ representa\ una\ arista\n\ en\ formato\ (origen,\ destino,\ peso)\n\n\ @return\ \ String\ que\ representa\ la\ arista\n
-numComments=6
+comment6.params=other
+comment6.target=int\ compareTo(Arista)
+numComments=7

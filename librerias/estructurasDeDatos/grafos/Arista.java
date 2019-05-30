@@ -5,7 +5,7 @@ package librerias.estructurasDeDatos.grafos;
  *  @version Mayo 2018
  */
  
-public class Arista {
+public class Arista implements Comparable<Arista> {
     
     // UNA Arista TIENE UN vertice origen y UN vertice destino:
     int v_src;
@@ -56,5 +56,11 @@ public class Arista {
      */
     public String toString() {
         return "(" + v_src + ", " + v_dst + ", " + weigth + ")"; 
+    }
+    
+    public int compareTo(Arista other) {
+        if (this.weigth == other.weigth) { return 0; }
+        else if (this.weigth < other.weigth) { return -1; }
+        else { return 1; }
     }
 }
